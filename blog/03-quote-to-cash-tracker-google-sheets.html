@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quote, Job &amp; Invoice Tracker in Google Sheets: How-To</title>
+<meta name="description" content="Stop losing track of quotes and unpaid invoices. Plan a Google Sheets tracker with client, quote, job, billing and dashboard tabs for a service business.">
+<!-- canonical placeholder: confirm final path before publishing -->
+<link rel="canonical" href="https://yjs121256.github.io/custom-requests/blog/03-quote-to-cash-tracker-google-sheets.html">
+<style>
+body{max-width:720px;margin:0 auto;padding:24px 16px;font:17px/1.65 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#222;background:#fff}
+h1{font-size:1.9em;line-height:1.25}h2{margin-top:1.8em;font-size:1.35em}
+a{color:#0b5cad}code{background:#f3f3f3;padding:1px 4px;border-radius:3px;font-size:.92em}
+table{border-collapse:collapse;width:100%;margin:1em 0}th,td{border:1px solid #ddd;padding:6px 8px;text-align:left}th{background:#f6f6f6}
+</style>
+</head>
+<body>
+<article>
+<h1>How to Track Quotes, Jobs and Unpaid Invoices in One Google Sheet (Service Business Guide)</h1>
+<p>Many small service businesses run on three disconnected lists: quotes in email, jobs in a notes app, and invoices in an accounting tool or a folder of PDFs. The result is familiar. A quote gets accepted but the job isn't scheduled. A job is finished but never invoiced. An invoice goes overdue and nobody notices for weeks.</p>
+<p>A single, well-structured Google Sheet can connect those steps from quote to cash. This guide shows how to plan one, tab by tab.</p>
+<h2>Why one sheet beats three lists</h2>
+<p>The value isn't in any single tab. It's in the links between them. When a quote, the job it became and the invoice it produced all share the same ID, you can answer the questions that matter in seconds:</p>
+<ul>
+<li>Which accepted quotes haven't started?</li>
+<li>Which finished jobs haven't been billed?</li>
+<li>How much money is owed to me right now, and how much is overdue?</li>
+</ul>
+<h2>Tab 1: Settings</h2>
+<p>Keep everything that might change in one place: your currency, tax rate (VAT/GST if you charge it), payment terms (for example, deposit percentage and days until due), and your list of services with unit prices. Other tabs read from here, so changing a price or tax rate never means editing dozens of formulas.</p>
+<h2>Tab 2: Clients</h2>
+<p>One row per client: name, contact, billing details and a client ID. Use the ID, not the name, everywhere else. Names get misspelled; IDs don't.</p>
+<h2>Tab 3: Quotes</h2>
+<p>Each quote gets an ID, client ID, date, services, amount and a status from a dropdown: Draft, Sent, Accepted, Declined. Data validation keeps the status list consistent, which makes every summary later reliable. Use XLOOKUP to pull client names and service prices from the other tabs automatically.</p>
+<h2>Tab 4: Jobs</h2>
+<p>When a quote is accepted, it becomes a job with its own status: Scheduled, In progress, Done. Keep the quote ID on the job row. Now a simple filter shows "accepted quotes with no job yet", which is where work quietly gets lost.</p>
+<h2>Tab 5: Billing and payments</h2>
+<p>Each invoice row links to a job and records the invoice date, amount, due date (calculated from your payment terms) and payment received. A formula compares today's date with the due date to flag overdue rows, and conditional formatting turns them red. This is the tab that protects your cash flow.</p>
+<h2>Tab 6: Dashboard</h2>
+<p>A dashboard turns all of the above into a few numbers you can check in a minute. Useful KPIs for a service business include:</p>
+<ul>
+<li>Open quotes (count and value)</li>
+<li>Quote acceptance rate</li>
+<li>Jobs done but not invoiced</li>
+<li>Total outstanding</li>
+<li>Overdue amount</li>
+<li>Paid this month</li>
+</ul>
+<p>SUMIFS and COUNTIFS do most of this work, and because they read the other tabs, the dashboard updates as soon as a row changes.</p>
+<h2>Formulas first, scripts later</h2>
+<p>You can build everything above with formulas, dropdowns, data validation and conditional formatting. No code is required. That matters: formula-only sheets are easier to hand to a bookkeeper or teammate, and they don't ask anyone to approve script permissions.</p>
+<p>Scripts become worth it when you want the sheet to act without you, for example a weekly summary email of what's open and overdue. In Google Sheets that's done with Apps Script, and it's best added once the structure is stable.</p>
+<h2>Common mistakes to avoid</h2>
+<ul>
+<li><strong>Free-text statuses.</strong> "Paid", "paid " and "PAID" count as three different values. Use dropdowns.</li>
+<li><strong>Names instead of IDs.</strong> They break lookups the first time a client changes their business name.</li>
+<li><strong>Hard-coded tax rates.</strong> Put them in Settings.</li>
+<li><strong>Fixed ranges.</strong> Ranges like A2:A200 stop counting at row 201. Use open-ended ranges.</li>
+<li><strong>Real client data in shared test copies.</strong> Build and test with dummy data, and keep real records only in your own sheet.</li>
+</ul>
+<h2>What's not a good fit for a spreadsheet</h2>
+<p>A sheet is a tracker, not a payment system. It won't collect card payments or replace accounting software for tax filing. If you need payment links or bank feeds, keep those in dedicated tools and use the sheet to see the whole pipeline in one place.</p>
+<h2>Have the tracker built for you</h2>
+<p>If you'd rather not build this from scratch, I offer a fixed-price listing on Upwork Project Catalog, "a custom Google Sheets business tracker and dashboard", with three tiers:</p>
+<ul>
+<li><strong>Starter Tracker ($180):</strong> 6 tabs, 6 KPIs, dropdowns and data validation, overdue highlights and a 1-page guide. Delivered in 4 days, 1 revision.</li>
+<li><strong>Standard + Automation ($320):</strong> everything in Starter, plus Google Forms intake, custom KPIs and a weekly summary email. Delivered in 6 days, 1 revision.</li>
+<li><strong>Advanced Workbook ($480):</strong> everything in Standard, plus up to 10 tabs and 2 extra report views. Delivered in 8 days, 2 revisions.</li>
+</ul>
+<p><strong>→ <a href="https://www.upwork.com/services/product/development-it-a-custom-google-sheets-business-tracker-and-dashboard-2111747767897971467">See the Google Sheets tracker on Upwork</a></strong></p>
+<h2>FAQ</h2>
+<p><strong>Do I need to know formulas to use the tracker?</strong>
+No. You enter data in the input tabs and use dropdowns; the formulas and dashboard update by themselves. A user guide is included.</p>
+<p><strong>Will it work in my Google account?</strong>
+Yes, it's a Google Sheet. For the weekly summary email (Standard and up), you approve the script from your own account. Some company Workspace accounts restrict scripts, so check this before ordering.</p>
+<p><strong>Can it handle my currency and tax?</strong>
+Yes. Currency, tax rate and payment terms are set in the Settings tab.</p>
+<p><strong>Can I use Excel instead?</strong>
+This tracker is built for Google Sheets. For Excel work, see the separate Google Sheets or Excel automation listing.</p>
+<p><strong>What do you need from me?</strong>
+Your industry, currency, tax use, list of services with prices, payment terms and the KPIs you want, plus a copy of any sheet you use today if you have one.</p>
+</article>
+</body>
+</html>

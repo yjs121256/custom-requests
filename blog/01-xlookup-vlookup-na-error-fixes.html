@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VLOOKUP or XLOOKUP Returning #N/A? 8 Fixes That Work</title>
+<meta name="description" content="VLOOKUP or XLOOKUP showing #N/A? Find the real cause (extra spaces, numbers stored as text, wrong ranges) and fix it in Google Sheets or Excel.">
+<!-- canonical placeholder: confirm final path before publishing -->
+<link rel="canonical" href="https://yjs121256.github.io/custom-requests/blog/01-xlookup-vlookup-na-error-fixes.html">
+<style>
+body{max-width:720px;margin:0 auto;padding:24px 16px;font:17px/1.65 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#222;background:#fff}
+h1{font-size:1.9em;line-height:1.25}h2{margin-top:1.8em;font-size:1.35em}
+a{color:#0b5cad}code{background:#f3f3f3;padding:1px 4px;border-radius:3px;font-size:.92em}
+table{border-collapse:collapse;width:100%;margin:1em 0}th,td{border:1px solid #ddd;padding:6px 8px;text-align:left}th{background:#f6f6f6}
+</style>
+</head>
+<body>
+<article>
+<h1>Why Your VLOOKUP or XLOOKUP Returns #N/A (and 8 Fixes That Work in Sheets and Excel)</h1>
+<p>You type a perfectly reasonable lookup formula, press Enter, and get #N/A. You can see the value sitting right there in the other table, yet the formula insists it doesn't exist. This is one of the most common spreadsheet problems, and the good news is that it nearly always comes down to a short list of causes.</p>
+<p>This guide walks through those causes in order, from most to least likely. Each fix works in both Google Sheets and Excel unless noted.</p>
+<h2>What #N/A actually means</h2>
+<h1>N/A means "not available": the lookup function searched the range you gave it and found no match for the value you asked about. It doesn't mean your formula is written wrong. It means the two values you think are identical are not identical to the spreadsheet. Your job is to find out why.</h1>
+<p>A quick test: pick one row that fails and compare the two cells directly with a formula like <code>=A2=Products!A5</code>. If the result is FALSE even though they look the same, the problem is in the data, not the lookup.</p>
+<h2>Fix 1: Remove hidden spaces</h2>
+<p>The number one cause. A SKU typed as "AB-100 " (with a trailing space) will never match "AB-100". Data pasted from websites, PDFs or exported reports often carries extra spaces, including non-breaking spaces that TRIM alone doesn't remove.</p>
+<ul>
+<li>Wrap the lookup value: <code>=XLOOKUP(TRIM(A2), Products!A:A, Products!C:C)</code></li>
+<li>Better, clean the source column once with a helper column using <code>=TRIM(CLEAN(A2))</code>, then paste values back.</li>
+<li>For non-breaking spaces, use <code>=TRIM(SUBSTITUTE(A2, CHAR(160), " "))</code>.</li>
+</ul>
+<h2>Fix 2: Numbers stored as text (or text stored as numbers)</h2>
+<p>If one table has order number 1045 as a number and the other has "1045" as text, they won't match. Signs include left-aligned numbers, a small green triangle in Excel, or a leading apostrophe.</p>
+<ul>
+<li>Convert the lookup value to match the table: <code>VALUE(A2)</code> to make it a number, or <code>A2&amp;""</code> to make it text.</li>
+<li>Or fix the column format at the source and re-enter the values.</li>
+</ul>
+<h2>Fix 3: Your range doesn't cover the new rows</h2>
+<p>A formula written as <code>A2:C500</code> stops working the day row 501 appears. This is especially common in sheets that grow every week, like order logs.</p>
+<ul>
+<li>Use whole columns (<code>A:A</code>) or a named range or Excel Table that expands automatically.</li>
+<li>In Google Sheets, open-ended ranges like <code>A2:C</code> grow with your data.</li>
+</ul>
+<h2>Fix 4: VLOOKUP's column rules</h2>
+<p>VLOOKUP only searches the first column of the range and only returns values to the right of it. If your key is in column C and the value you want is in column A, VLOOKUP can't do it.</p>
+<ul>
+<li>Switch to XLOOKUP (Excel 365/2021 and Google Sheets) or INDEX/MATCH, which can look in any direction.</li>
+<li>Check the column index number. If someone inserted a column into the table, a hard-coded <code>3</code> may now point at the wrong column.</li>
+</ul>
+<h2>Fix 5: Approximate match turned on by accident</h2>
+<p>VLOOKUP's last argument defaults to approximate match when you leave it out. On unsorted data, that produces wrong results or #N/A at random-looking rows. Always set it explicitly: <code>=VLOOKUP(A2, Products!A:C, 3, FALSE)</code>. XLOOKUP defaults to exact match, which is one reason many people prefer it.</p>
+<h2>Fix 6: Absolute references when you copy the formula down</h2>
+<p>If you write <code>Products!A2:C500</code> without dollar signs and drag the formula down, the range slides down with it, and rows near the bottom search a shrinking table. Lock it: <code>Products!$A$2:$C$500</code>, or use whole columns.</p>
+<h2>Fix 7: Case, dashes and look-alike characters</h2>
+<p>Lookups are not case-sensitive, so case isn't usually the issue. But look-alike characters are: an en dash (–) instead of a hyphen (-), a letter O instead of a zero, or curly quotes from a word processor. These often arrive when product codes are copied from documents. Use FIND or a comparison formula on a failing row to spot the odd character, then SUBSTITUTE it across the column.</p>
+<h2>Fix 8: The value really isn't there</h2>
+<p>Sometimes the lookup is right and the data is incomplete: a new product hasn't been added to the price list yet. Instead of showing an ugly error, handle it on purpose:</p>
+<ul>
+<li>XLOOKUP: <code>=XLOOKUP(A2, Products!A:A, Products!C:C, "Not in list")</code></li>
+<li>Others: <code>=IFNA(VLOOKUP(A2, Products!A:C, 3, FALSE), "Not in list")</code></li>
+</ul>
+<p>Avoid wrapping everything in IFERROR by default. It hides real problems, like a typo in a sheet name, that you'd want to see.</p>
+<h2>A simple troubleshooting order</h2>
+<p>When a lookup fails, check in this order:</p>
+<ol>
+<li>Compare one failing pair with <code>=A2=B2</code>.</li>
+<li>Check for spaces with <code>=LEN(A2)</code> on both cells.</li>
+<li>Check number vs text with <code>=ISNUMBER(A2)</code>.</li>
+<li>Check that the range includes the row you expect.</li>
+<li>Confirm exact match is on.</li>
+</ol>
+<p>Most #N/A problems are solved by step 3.</p>
+<h2>When to get help</h2>
+<p>If you've worked through the list and the sheet still fails, or the same errors keep coming back because data arrives messy every week, it may be faster to have someone fix the formulas and clean the source data once.</p>
+<p>I offer a fixed-price <strong>Formula Fix</strong> package (the Starter tier of my Upwork listing "Google Sheets or Excel automation with formulas or Apps Script"): I fix or write up to 3 formulas (for example XLOOKUP/VLOOKUP, SUMIFS, IF, QUERY or ARRAYFORMULA) or do one data cleanup of up to 1,000 rows, with a short note explaining how each formula works. It costs $20, is delivered in 1 day and includes 1 revision. Dummy data is fine, and everything is handled in writing.</p>
+<p><strong>→ <a href="https://www.upwork.com/services/product/development-it-google-sheets-or-excel-automation-with-formulas-or-apps-script-2112587349676366872">Get your formulas fixed on Upwork</a></strong></p>
+<h2>FAQ</h2>
+<p><strong>Why does my VLOOKUP work for some rows but not others?</strong>
+Usually inconsistent data: some keys have trailing spaces or are stored as text. It can also be a range that doesn't include newer rows.</p>
+<p><strong>Is XLOOKUP better than VLOOKUP?</strong>
+For most new work, yes. It searches in any direction, defaults to exact match and has a built-in "if not found" value. It needs Excel 365/2021 or Google Sheets; older Excel versions don't have it.</p>
+<p><strong>Should I use IFERROR to hide #N/A?</strong>
+Use IFNA or XLOOKUP's "if not found" argument instead, so other errors stay visible.</p>
+<p><strong>Does this work the same in Excel and Google Sheets?</strong>
+The causes and fixes are the same. A few functions, like QUERY, exist only in Google Sheets.</p>
+<p><strong>Can you fix a whole workbook, not just three formulas?</strong>
+Larger jobs fit the Standard (One Automation, $50, 3 days) or Advanced (Sheet System / Dashboard, $130, 5 days) tiers, or a written custom quote before any work starts.</p>
+</article>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Apps Script vs Excel VBA: Which One to Use</title>
+<meta name="description" content="Apps Script or VBA? Compare where each runs, what it can automate, Mac limits and sharing, and pick the right one for your spreadsheet workflow.">
+<!-- canonical placeholder: confirm final path before publishing -->
+<link rel="canonical" href="https://yjs121256.github.io/custom-requests/blog/02-apps-script-vs-excel-vba.html">
+<style>
+body{max-width:720px;margin:0 auto;padding:24px 16px;font:17px/1.65 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#222;background:#fff}
+h1{font-size:1.9em;line-height:1.25}h2{margin-top:1.8em;font-size:1.35em}
+a{color:#0b5cad}code{background:#f3f3f3;padding:1px 4px;border-radius:3px;font-size:.92em}
+table{border-collapse:collapse;width:100%;margin:1em 0}th,td{border:1px solid #ddd;padding:6px 8px;text-align:left}th{background:#f6f6f6}
+</style>
+</head>
+<body>
+<article>
+<h1>Google Apps Script vs Excel VBA: Which Should You Use to Automate Your Spreadsheet?</h1>
+<p>You've decided a repetitive spreadsheet task should run by itself. Now comes the next question: should you automate it with Google Apps Script in Google Sheets, or with a VBA macro in Excel? Both are capable. They just live in very different places, and choosing the wrong one can mean rebuilding later.</p>
+<p>This guide compares the two in plain terms so you can choose based on how your business actually works.</p>
+<h2>The short answer</h2>
+<ul>
+<li><strong>Your team already works in Google Sheets, shares files by link, or needs things to run on a schedule while nobody's computer is on?</strong> Use <strong>Apps Script</strong>.</li>
+<li><strong>Your files are desktop Excel workbooks, your work happens on Windows PCs, and the automation runs while someone has the file open?</strong> Use <strong>VBA</strong>.</li>
+<li><strong>The task is really a calculation?</strong> You may need neither. A well-built formula often replaces a script entirely.</li>
+</ul>
+<h2>Where each one runs</h2>
+<p><strong>Apps Script</strong> runs on Google's servers, attached to your Google account and your sheet. That means it can run on a timer (every hour, every Monday morning) even when your laptop is closed. It also works the same no matter what computer you open the sheet from.</p>
+<p><strong>VBA</strong> runs inside the Excel desktop application on the computer that has the workbook open. It's deeply integrated with Excel and can be very fast on large local files, but it generally runs when a person opens the file or clicks a button. Macro-enabled workbooks are saved as .xlsm.</p>
+<h2>What each is good at</h2>
+<p><strong>Apps Script is a strong fit for:</strong>
+- Sending emails from a sheet, such as an alert when stock drops below a level or a weekly summary
+- Automatic timestamps when a status changes
+- Moving or archiving rows between tabs based on a status
+- Scheduled triggers that run at set times
+- Custom menus that let non-technical teammates run a task with one click
+- Connecting to other Google tools like Forms, Gmail and Drive</p>
+<p><strong>VBA is a strong fit for:</strong>
+- Repetitive formatting and report building inside Excel
+- Processing large workbooks on a local machine
+- Workflows where files are emailed around or stored on a shared drive as .xlsx/.xlsm
+- Teams whose other tools and templates are already Excel-based</p>
+<h2>The Mac question</h2>
+<p>This catches many people out. VBA has limits on Mac versions of Excel, and some macros written on Windows behave differently or fail on a Mac. Excel for the web doesn't run VBA macros at all. If your team mixes Windows and Mac, or works in the browser, Apps Script or a formula-based approach is usually the safer choice.</p>
+<h2>Sharing and permissions</h2>
+<p>With Apps Script, the first time someone runs a script that sends email or edits files, Google asks them to authorize it. That's normal, but the warning screen can surprise people, so good setup notes matter. Some company Google Workspace accounts restrict scripts, which is worth checking before you start.</p>
+<p>With VBA, Excel may block macros in files downloaded from the internet or received by email, and users need to trust the file before it runs. Again, a short instruction note solves most confusion.</p>
+<h2>Maintenance</h2>
+<p>Both languages are readable if the code is commented. Apps Script uses JavaScript, which many developers know. VBA has been around for decades and has a huge library of examples. Whichever you choose, ask for three things from whoever builds it: comments in the code, written setup steps, and testing on your real (or dummy) data, including extra rows.</p>
+<h2>A quick decision checklist</h2>
+<p>Answer these five questions:</p>
+<ol>
+<li>Where does the file live today: Google Drive or desktop Excel?</li>
+<li>Does the task need to run on a schedule when nobody is at a computer?</li>
+<li>Does anyone on the team use a Mac or Excel in the browser?</li>
+<li>Does the automation need to send email or talk to Google Forms?</li>
+<li>Could a formula do this instead of code?</li>
+</ol>
+<p>If you answered "Google Drive", "yes", "yes", "yes", lean towards Apps Script. If the file lives in desktop Excel and everyone uses Windows, VBA is a natural fit. If the answer to question 5 is yes, start with formulas.</p>
+<h2>Examples by task</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Better fit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Email me when stock is low</td>
+<td>Apps Script</td>
+</tr>
+<tr>
+<td>Timestamp a row when it's marked "Shipped"</td>
+<td>Apps Script</td>
+</tr>
+<tr>
+<td>Run a cleanup every Monday at 9:00</td>
+<td>Apps Script</td>
+</tr>
+<tr>
+<td>One-click button to format a monthly report in Excel</td>
+<td>VBA</td>
+</tr>
+<tr>
+<td>Combine several worksheets in a local workbook</td>
+<td>VBA</td>
+</tr>
+<tr>
+<td>Look up prices by SKU</td>
+<td>Formula (XLOOKUP)</td>
+</tr>
+</tbody>
+</table>
+<h2>Get one automation built</h2>
+<p>If you know what you want automated but don't want to learn a scripting language to do it, I offer a fixed-price <strong>One Automation</strong> package (the Standard tier of my Upwork listing "Google Sheets or Excel automation with formulas or Apps Script"). It covers one automation: either a Google Apps Script (for example an auto-email, timestamp, copying rows between tabs or a scheduled trigger), an Excel VBA macro, or one connected set of formulas with dropdowns and conditional formatting. It's for 1 sheet or workbook, tested on your sample data, with written setup steps. The price is $50, delivery is 3 days and it includes 2 revisions.</p>
+<p>Not sure whether Apps Script or VBA fits? Describe the task in a message and I'll recommend one in writing before you order.</p>
+<p><strong>→ <a href="https://www.upwork.com/services/product/development-it-google-sheets-or-excel-automation-with-formulas-or-apps-script-2112587349676366872">Order One Automation on Upwork</a></strong></p>
+<h2>FAQ</h2>
+<p><strong>Can VBA macros run in Google Sheets?</strong>
+No. Google Sheets uses Apps Script. A VBA macro has to be rewritten to work there.</p>
+<p><strong>Can Apps Script work with Excel files?</strong>
+Not directly inside Excel. Apps Script works with Google Sheets, so an Excel file would need to be converted first.</p>
+<p><strong>Is Apps Script free?</strong>
+It's built into Google Sheets at no extra cost, though Google applies daily usage quotas, such as limits on how many emails a script can send.</p>
+<p><strong>Do I own the code?</strong>
+With this package, yes: you get full ownership, with readable formulas and commented scripts plus a how-to note.</p>
+<p><strong>Do you do calls?</strong>
+No. Everything is agreed in writing in Upwork messages, so requirements stay documented.</p>
+</article>
+</body>
+</html>

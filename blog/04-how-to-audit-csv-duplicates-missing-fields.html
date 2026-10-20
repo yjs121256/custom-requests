@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Audit a CSV Before Import: A Practical Checklist</title>
+<meta name="description" content="Importing a CSV into Shopify, a CRM or a database? Check duplicates, missing fields, bad formats and encoding first with this step-by-step audit list.">
+<!-- canonical placeholder: confirm final path before publishing -->
+<link rel="canonical" href="https://yjs121256.github.io/custom-requests/blog/04-how-to-audit-csv-duplicates-missing-fields.html">
+<style>
+body{max-width:720px;margin:0 auto;padding:24px 16px;font:17px/1.65 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#222;background:#fff}
+h1{font-size:1.9em;line-height:1.25}h2{margin-top:1.8em;font-size:1.35em}
+a{color:#0b5cad}code{background:#f3f3f3;padding:1px 4px;border-radius:3px;font-size:.92em}
+table{border-collapse:collapse;width:100%;margin:1em 0}th,td{border:1px solid #ddd;padding:6px 8px;text-align:left}th{background:#f6f6f6}
+</style>
+</head>
+<body>
+<article>
+<h1>How to Audit a CSV File Before Import: Duplicates, Missing Fields and Data Errors</h1>
+<p>A CSV import looks simple: export from one system, upload to another. Then the trouble starts. The new store shows the same product twice. Half the customer records have no email. Dates import as text, phone numbers lose their leading zero, and an accented name turns into strange symbols.</p>
+<p>Most of these problems are visible in the file before you import it, if you know where to look. Here is a practical audit checklist you can run in Google Sheets or Excel.</p>
+<h2>Step 0: Never edit the original</h2>
+<p>Make a copy of the file and work on the copy. Keep the original export untouched so you can always go back and compare. If the file contains personal data, limit who can open it.</p>
+<h2>Step 1: Open it the right way</h2>
+<p>Double-clicking a CSV in Excel can silently change your data: long numbers become scientific notation, leading zeros disappear and some text turns into dates. Instead, import it (in Excel, Data → From Text/CSV; in Google Sheets, File → Import) and set sensitive columns like IDs, ZIP codes and phone numbers to text.</p>
+<p>Also check the encoding. If you see characters like "Ã©" where "é" should be, the file is probably UTF-8 being read as something else. Re-import with UTF-8 selected.</p>
+<h2>Step 2: Check the structure</h2>
+<p>Before looking at values, confirm the shape of the file:</p>
+<ul>
+<li>Do the column headers match what the destination system expects, spelled exactly?</li>
+<li>Does every row have the same number of columns? A stray comma inside an unquoted field shifts everything to the right.</li>
+<li>Are there blank rows or summary rows (like "Total") at the bottom that shouldn't be imported?</li>
+</ul>
+<h2>Step 3: Find duplicates</h2>
+<p>Decide first what "duplicate" means for this file. For customers, it might be the same email. For products, the same SKU. For orders, the same order number.</p>
+<ul>
+<li>Use <code>=COUNTIF(A:A, A2)&gt;1</code> in a helper column to flag repeated keys.</li>
+<li>Clean keys before comparing: <code>=LOWER(TRIM(A2))</code> catches "Anna@Example.com " versus "anna@example.com".</li>
+<li>Look for near-duplicates too, such as the same customer with two spellings of their name but the same phone number.</li>
+</ul>
+<p>Don't delete duplicates automatically. Flag them, review them, then decide which record to keep.</p>
+<h2>Step 4: Find missing fields</h2>
+<p>List the columns the destination system requires, then count blanks in each:</p>
+<ul>
+<li><code>=COUNTBLANK(B2:B)</code> per required column gives a quick overview.</li>
+<li>Filter each required column for blanks to see the rows affected.</li>
+<li>Watch for "fake" values that aren't blank but are just as empty: "N/A", "-", "0" or "test".</li>
+</ul>
+<h2>Step 5: Check formats and values</h2>
+<p>This is where most import errors come from:</p>
+<ul>
+<li><strong>Dates:</strong> are they all in one format? Mixed 03/04/2026 and 2026-04-03 means some may be read with day and month swapped.</li>
+<li><strong>Numbers:</strong> prices with currency symbols or commas as decimal separators may import as text.</li>
+<li><strong>Emails:</strong> a simple check for "@" and a dot after it catches obvious typos.</li>
+<li><strong>Phone numbers:</strong> consistent format, country code if needed, no lost leading zeros.</li>
+<li><strong>Allowed values:</strong> columns like status, country or size should only contain values from a fixed list.</li>
+<li><strong>Lengths:</strong> some systems cut off long text fields or reject them.</li>
+</ul>
+<h2>Step 6: Write down what you found</h2>
+<p>An audit is only useful if someone can act on it. For each issue, record the row, the column, what's wrong and the suggested fix. A short summary at the top (how many rows, how many duplicates, how many missing required fields) helps you decide whether the file is ready or needs to go back to whoever exported it.</p>
+<h2>Step 7: Test with a small batch</h2>
+<p>Even after a clean audit, import 5–10 rows first and check them in the destination system before importing everything. It's far easier to fix ten records than ten thousand.</p>
+<h2>A quick audit checklist</h2>
+<ul>
+<li>[ ] Working on a copy</li>
+<li>[ ] Imported with correct encoding and text columns</li>
+<li>[ ] Headers match the destination exactly</li>
+<li>[ ] Same column count on every row</li>
+<li>[ ] Duplicates flagged by key</li>
+<li>[ ] Required fields checked for blanks and fake values</li>
+<li>[ ] Dates, numbers, emails and phones in consistent formats</li>
+<li>[ ] Issues logged with row and column</li>
+<li>[ ] Small test import done</li>
+</ul>
+<h2>Get your CSV audited</h2>
+<p>If the file is large, the import is important, or you simply don't have time to check it row by row, I offer a fixed-price CSV audit on Upwork Project Catalog: <strong>"I will audit one CSV for duplicates, missing fields, and data errors."</strong> There are three tiers:</p>
+<ul>
+<li><strong>One-file check ($75):</strong> 1 CSV format, up to 1,000 rows, an issue report and next steps. Delivered in 2 days.</li>
+<li><strong>Audit + re-check ($149):</strong> up to 3,000 rows, an issue report, a checklist and one re-check. Delivered in 3 days, 1 revision.</li>
+<li><strong>Reporting pilot ($350):</strong> a weekly sales and staff report for one agreed CSV format. Delivered in 5 days, 1 revision.</li>
+</ul>
+<p>Dummy or masked data is welcome if your file contains personal information.</p>
+<p><strong>→ <a href="https://www.upwork.com/services/product/development-it-i-will-audit-one-csv-for-duplicates-missing-fields-and-data-errors-2101705721729469516">Order a CSV audit on Upwork</a></strong></p>
+<h2>FAQ</h2>
+<p><strong>Can I do this in Google Sheets, or do I need special software?</strong>
+Google Sheets or Excel is enough for most files. Very large files may be slow to open in a spreadsheet.</p>
+<p><strong>Should I remove duplicates before importing?</strong>
+Flag and review them first. Two rows with the same email may hold different, useful information that should be merged rather than deleted.</p>
+<p><strong>Why do my leading zeros disappear?</strong>
+The spreadsheet treated the column as a number. Import the CSV and set that column to text.</p>
+<p><strong>What's the most common import error?</strong>
+Header names that don't match what the destination expects, followed by missing required fields and inconsistent date formats.</p>
+<p><strong>Does an audit change my data?</strong>
+An audit identifies and reports problems. You get an issue report with next steps; the Standard tier adds a checklist and one re-check after you've made fixes.</p>
+</article>
+</body>
+</html>
