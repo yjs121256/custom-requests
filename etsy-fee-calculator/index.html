@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Etsy Fee Calculator 2026 – See Your Real Profit per Sale</title>
+<meta name="description" content="Free Etsy fee calculator (2026 rates): listing fee, 6.5% transaction fee, 3% + $0.25 payment processing and 15% Offsite Ads. See profit, margin and the price you need.">
+<style>body{font-family:system-ui,sans-serif;max-width:760px;margin:0 auto;padding:20px;color:#222;background:#fffaf5}h1{color:#c2410c}label{display:block;margin:8px 0 2px;font-weight:600}input{width:100%;padding:9px;font-size:16px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:#fff;border-radius:12px;padding:16px;margin:16px 0;box-shadow:0 1px 4px #0002}table{width:100%;border-collapse:collapse}td{padding:5px;border-bottom:1px solid #eee}td:last-child{text-align:right}.big{font-size:26px;font-weight:700}.neg{color:#b91c1c}.pos{color:#15803d}.cta{display:block;text-align:center;background:#c2410c;color:#fff;padding:14px;border-radius:10px;text-decoration:none;font-weight:700;font-size:18px}small{color:#666}</style></head><body>
+<h1>Free Etsy Fee Calculator (2026)</h1>
+<p>Enter your price and costs. See every Etsy fee, what you keep, and the price you need for your target margin. US seller rates; the numbers update as you type.</p>
+<div class="card"><div class="g">
+<div><label>Item price ($)</label><input id="p" type="number" value="25" step="0.01"></div>
+<div><label>Shipping charged to buyer ($)</label><input id="s" type="number" value="0" step="0.01"></div>
+<div><label>Material/product cost ($)</label><input id="c" type="number" value="6" step="0.01"></div>
+<div><label>Your actual shipping + packaging ($)</label><input id="sc" type="number" value="0" step="0.01"></div>
+<div><label>Etsy Ads spend per sale ($)</label><input id="ad" type="number" value="0" step="0.01"></div>
+<div><label>Target profit margin (%)</label><input id="tm" type="number" value="30"></div></div>
+<label><input id="off" type="checkbox" style="width:auto"> This sale came from an Offsite Ad (15% fee, max $100)</label></div>
+<div class="card"><table id="t"></table><p>Profit per sale: <span id="pr" class="big"></span> &nbsp; Margin: <b id="mg"></b></p>
+<p>Price needed for a <b id="tm2"></b>% margin: <span id="need" class="big"></span></p></div>
+<div class="card"><h2>Track this for every product, automatically</h2>
+<p>This page does one item at a time. The <b>Etsy Seller Profit Toolkit</b> (Excel + Google Sheets, 9 tabs) does it for your whole shop: a pricing calculator, sales log, inventory, monthly profit dashboard and a list of the products that are losing you money.</p>
+<a class="cta" id="buy" href="https://yjscribe4.gumroad.com/l/jeecf?utm_source=fee-calculator">Get the full Toolkit – $12.99</a>
+<p><small>Instant download. Works in Excel and Google Sheets.</small></p></div>
+<p><small>Rates: $0.20 listing fee, 6.5% transaction fee on price + shipping, 3% + $0.25 Etsy Payments processing (US), Offsite Ads 15% for shops under $10k/yr. Sources: <a href="https://www.etsy.com/legal/fees/">Etsy Fees &amp; Payments Policy</a>, <a href="https://help.etsy.com/hc/en-us/articles/360000338367">Etsy Offsite Ads</a>. Processing fees differ outside the US. Estimate only, not financial advice. Not affiliated with Etsy.</small></p>
+<script>
+const $=i=>document.getElementById(i),f=n=>(n<0?'-$':'$')+Math.abs(n).toFixed(2);
+function calc(){const p=+$('p').value||0,s=+$('s').value||0,c=+$('c').value||0,sc=+$('sc').value||0,ad=+$('ad').value||0,tm=(+$('tm').value||0)/100,off=$('off').checked;
+const rev=p+s,L=.2,T=.065*rev,P=.03*rev+.25,O=off?Math.min(.15*rev,100):0,fees=L+T+P+O,cost=c+sc+ad,pr=rev-fees-cost;
+$('t').innerHTML=[['Buyer pays',rev],['Listing fee',-L],['Transaction fee (6.5%)',-T],['Payment processing (3% + $0.25)',-P],['Offsite Ads (15%)',-O],['Your costs',-cost],['Total Etsy fees',-fees]].map(r=>`<tr><td>${r[0]}</td><td>${f(r[1])}</td></tr>`).join('');
+$('pr').textContent=f(pr);$('pr').className='big '+(pr<0?'neg':'pos');$('mg').textContent=rev?(pr/rev*100).toFixed(1)+'%':'-';$('tm2').textContent=(tm*100).toFixed(0);
+const rate=.065+.03+(off?.15:0),d=1-rate-tm;$('need').textContent=d>0?f(((cost+.45)/d)-s):'n/a';}
+document.querySelectorAll('input').forEach(e=>e.addEventListener('input',calc));calc();
+</script></body></html>
